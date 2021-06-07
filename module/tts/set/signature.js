@@ -23,6 +23,12 @@ const snobj = [
             '멈춰!'
         ],
         url: '멈춰'
+    },
+    {
+        name: [
+            '나락'
+        ],
+        url: '나락'
     }
 ];
 var sncheckobj = {};
