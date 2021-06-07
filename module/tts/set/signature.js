@@ -38,5 +38,9 @@ for (i in snobj) {
         sncheckobj[obj.name[j]] = obj.url;
     }
 }
+const output = [
+    sncheckobj,
+    snobj
+];
 
-module.exports = sncheckobj;
+module.exports = output;

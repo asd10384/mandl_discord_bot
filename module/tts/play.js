@@ -17,7 +17,7 @@ module.exports = {
     broadcast,
 };
 
-const sncheckobj = require('./set/signature');
+const sncheckobj = require('./set/signature')[0];
 const snlist = Object.keys(sncheckobj);
 const sncheck = eval(`/(${snlist.join('|')})/g`);
 
