@@ -29,6 +29,13 @@ const snobj = [
             '나락'
         ],
         url: '나락'
+    },
+    {
+        name: [
+            '응아니야',
+            '응 아니야'
+        ],
+        url: '응아니야'
     }
 ];
 var sncheckobj = {};
