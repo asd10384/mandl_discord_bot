@@ -3,6 +3,8 @@ require('dotenv').config();
 const db = require('quick.db');
 const { MessageEmbed, Client, Message, User } = require('discord.js');
 const MDB = require('../MDB/data');
+const Udata = MDB.module.user();
+const log = require('../log/log');
 
 const tts = require('../module/tts/tts');
 const ttstimer = require('../module/tts/timer');
@@ -39,6 +41,11 @@ module.exports = {
                     \` 메인 명령어 \`
                     ${pp}tts [messages] : 메세지를 음성으로 재생
                     ${pp}tts 채널설정 : tts채팅방을 만들고 봇과 연결합니다.
+                    
+                    ${pp}tts 이동 활성화
+                     : 메세지를 입력했을때 다른방에 봇이 있으면 봇을 불러옵니다.
+                    ${pp}tts 이동 비활성화
+                    : 메세지를 입력했을때 다른방에 봇이 있으면 봇을 불러오지않습니다.
 
                     \` 관련 명령어 \`
                     ${pp}join [voice channel id]
@@ -61,9 +68,46 @@ module.exports = {
             if (!(message.member.permissions.has('ADMINISTRATOR') || message.member.roles.cache.some(r=>sdb.role.includes(r.id)))) return message.channel.send(per).then(m => msgdelete(m, msg_time));
             return await ban.unban(client, message, args, sdb, user, pp);
         }
+        if (args[0] == '이동') {
+            var onoff = '';
+            if (args[1] == '활성화' || args[1] == 'on') onoff = 'on';
+            if (args[1] == '비활성화' || args[1] == 'off') onoff = 'off';
+            if (onoff) {
+                Udata.findOne({
+                    userID: user.id
+                }, async (err, db1) => {
+                    var udb = MDB.object.user;
+                    udb = db1;
+                    if (!udb) {
+                        await MDB.set.user(user);
+                    }
+                    if (onoff == 'on') {
+                        if (!udb.ttsnomove) return message.channel.send(eb(pp, 'RED', `오류`, `봇 이동이 이미 **활성화** 되어있습니다.`)).then(m => msgdelete(m, Number(process.env.deletetime)));
+                        udb.ttsnomove = false;
+                        udb.save().catch((err) => log.errlog(err));
+                        return message.channel.send(eb(pp, 'ORANGE', `활성화`, `봇 이동이 **활성화** 되었습니다.`)).then(m => msgdelete(m, Number(process.env.deletetime))*3);
+                    }
+                    if (onoff == 'off') {
+                        if (udb.ttsnomove) return message.channel.send(eb(pp, 'RED', `오류`, `봇 이동이 이미 **비활성화** 되어있습니다.`)).then(m => msgdelete(m, Number(process.env.deletetime)));
+                        udb.ttsnomove = true;
+                        udb.save().catch((err) => log.errlog(err));
+                        return message.channel.send(eb(pp, 'ORANGE', `비활성화`, `봇 이동이 **비활성화** 되었습니다.`)).then(m => msgdelete(m, Number(process.env.deletetime))*3);
+                    }
+                });
+                return;
+            }
+        }
         return await tts.tts(client, message, args, sdb, user);
     },
 };
+
+function eb(pp = '', color = '', title = '', disc = '') {
+    return new MessageEmbed()
+        .setTitle(`**tts 이동 ${title}**`)
+        .setDescription(disc)
+        .setFooter(`${pp}tts 도움말`)
+        .setColor(color);
+}
 
 function msgdelete(m = new Message, t = Number) {
     setTimeout(() => {

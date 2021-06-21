@@ -25,6 +25,7 @@ const out = {
             name: String,
             userID: String,
             tts: Boolean,
+            ttsnomove: Boolean,
             selfcheck: {
                 area: String,
                 school: String,
@@ -133,6 +134,7 @@ async function set_user(user = new User) {
         name: user.username,
         userID: user.id,
         tts: true,
+        ttsnomove: false,
         selfcheck: {
             area: '',
             school: '',

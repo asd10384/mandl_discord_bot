@@ -49,21 +49,34 @@ async function tts(client = new Client, message = new Message, args = Array, sdb
         if (sdb.tts.tts) {
             db.set(`db.${message.guild.id}.tts.timertime`, 600);
             var channel;
-            try {
-                if (message.member.voice.channel) {
-                    channel = message.member.voice.channel;
-                } else if (message.guild.me.voice.channel) {
-                    channel = message.guild.voice.channel;
+            if (!udb.ttsnomove) {
+                try {
+                    if (message.member.voice.channel) {
+                        channel = message.member.voice.channel;
+                    } else if (message.guild.me.voice.channel) {
+                        channel = message.guild.voice.channel;
+                    }
+                } catch (err) {
+                    log.errlog(err);
+                    return message.channel.send(vcerr).then(m => msgdelete(m, Number(process.env.deletetime)));
                 }
-                if (!channel) return message.channel.send(vcerr).then(m => msgdelete(m, Number(process.env.deletetime)));
-                if (url.text) {
-                    return await play(message, sdb, channel, url.url, url.options);
+            } else {
+                try {
+                    if (message.guild.me.voice.channel) {
+                        channel = message.guild.me.voice.channel;
+                    } else if (message.member.voice.channel) {
+                        channel = message.member.voice.channel;
+                    }
+                } catch (err) {
+                    log.errlog(err);
+                    return message.channel.send(vcerr).then(m => msgdelete(m, Number(process.env.deletetime)));
                 }
-                return await broadcast(message, sdb, channel, url.url, url.options);
-            } catch (err) {
-                log.errlog(err);
-                return message.channel.send(vcerr).then(m => msgdelete(m, Number(process.env.deletetime)));
             }
+            if (!channel) return message.channel.send(vcerr).then(m => msgdelete(m, Number(process.env.deletetime)));
+            if (url.text) {
+                return await play(message, sdb, channel, url.url, url.options);
+            }
+            return await broadcast(message, sdb, channel, url.url, url.options);
         } else {
             const music = new MessageEmbed()
                 .setTitle(`\` 재생 오류 \``)
