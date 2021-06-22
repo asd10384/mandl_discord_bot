@@ -8,7 +8,7 @@ const log = require('../../log/log');
 const udata = MDB.module.user();
 
 const ytdl = require('ytdl-core');
-var checkyturl = /(?:http:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/;
+var checkyturl = /(?:http:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g;
 var checkytid = /(?:http:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?/gi;
 
 const vcerr = new MessageEmbed()
@@ -90,13 +90,18 @@ async function tts(client = new Client, message = new Message, args = Array, sdb
 
 // 유튜브 URL 생성
 async function geturl(message = new Message, text = String, options = Object) {
-    if (text.match(checkyturl)) {
+    if (text.indexOf(checkyturl) > -1) {
         try {
             options = {
                 volume: 0.08
             };
-            var yt = ytdl(`https://youtu.be/${text.replace(checkytid, '')}`, { bitrate: 512000 });
+            var yt = ytdl(`https://youtu.be/${text.replace(checkytid, '')}`, { bitrate: 512000 }) || null;
             message.delete();
+            if (!yt) return {
+                url: 'youtubelinkerror',
+                options: options,
+                text: false
+            }
             return {
                 url: yt,
                 options: options,
@@ -106,7 +111,7 @@ async function geturl(message = new Message, text = String, options = Object) {
             return {
                 url: 'youtubelinkerror',
                 options: options,
-                text: false,
+                text: false
             };
         }
     }
@@ -118,7 +123,7 @@ async function geturl(message = new Message, text = String, options = Object) {
 }
 // 유튜브 URL 생성 끝
 
-const repobj = require('./set/ttsmsg');
+const repobj = eval(process.env.TTSMSG);
 function msg (text = '') {
     text = text.replace(/<@\!?[(0-9)]{18}>/, '');
     for (i in repobj) {
