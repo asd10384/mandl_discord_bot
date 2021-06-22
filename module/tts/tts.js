@@ -123,7 +123,7 @@ async function geturl(message = new Message, text = String, options = Object) {
 }
 // 유튜브 URL 생성 끝
 
-const repobj = eval(process.env.TTSMSG);
+const repobj = eval(process.env.TTSMSG)[0] || require('./set/ttsmsg');
 function msg (text = '') {
     text = text.replace(/<@\!?[(0-9)]{18}>/, '');
     for (i in repobj) {
