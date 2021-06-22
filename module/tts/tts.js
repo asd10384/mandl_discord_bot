@@ -90,12 +90,12 @@ async function tts(client = new Client, message = new Message, args = Array, sdb
 
 // 유튜브 URL 생성
 async function geturl(message = new Message, text = String, options = Object) {
-    if (text.replace(checkyturl,'').length == 0) {
+    if (text.replace(/ +/g,'').replace(checkyturl,'').length == 0) {
         try {
             options = {
                 volume: 0.08
             };
-            var yt = ytdl(`https://youtu.be/${text.replace(checkytid, '')}`, { bitrate: 512000 }) || null;
+            var yt = ytdl(`https://youtu.be/${text.replace(/ +/g,'').replace(checkytid, '')}`, { bitrate: 512000 }) || null;
             message.delete();
             if (!yt) return {
                 url: 'youtubelinkerror',

@@ -7,6 +7,8 @@ const { join } = require('path');
 const db = require('quick.db');
 const log = require('./log/log');
 const { ansermsg } = require('./module/quiz/ansermsg');
+var checkyturl = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g;
+var checkmsg = /\;+/g;
 
 // env
 const dfprefix = process.env.prefix;
@@ -80,7 +82,11 @@ client.on('message', async (message) => {
 
             // prefix 입력시
             if (message.content.startsWith(prefix)) {
-                const args = message.content.slice(prefix.length).trim().split(/ +/g);
+                const content = message.content.slice(prefix.length).trim();
+                if (checkyturl.exec(content)) return;
+                if (checkmsg.exec(content)) return;
+
+                const args = content.split(/ +/g);
                 const commandName = args.shift().toLowerCase();
                 
                 const command = client.commands.get(commandName) ||
