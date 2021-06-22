@@ -90,7 +90,7 @@ async function tts(client = new Client, message = new Message, args = Array, sdb
 
 // 유튜브 URL 생성
 async function geturl(message = new Message, text = String, options = Object) {
-    if (text.replace(checkyturl).length == 0) {
+    if (text.replace(checkyturl,'').length == 0) {
         try {
             options = {
                 volume: 0.08
