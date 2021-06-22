@@ -8,8 +8,8 @@ const log = require('../../log/log');
 const udata = MDB.module.user();
 
 const ytdl = require('ytdl-core');
-var checkyturl = /(?:http:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g;
-var checkytid = /(?:http:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?/gi;
+var checkyturl = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g;
+var checkytid = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?/gi;
 
 const vcerr = new MessageEmbed()
     .setTitle(`먼저 봇을 음성에 넣고 사용해 주십시오.`)
