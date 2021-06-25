@@ -8,8 +8,8 @@ const log = require('../../log/log');
 const udata = MDB.module.user();
 
 const ytdl = require('ytdl-core');
-var checkyturl = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g;
-var checkytid = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?/gi;
+var checkyturl = /(?:https?:\/\/)?(?:www\.|music\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g;
+var checkytid = /(?:https?:\/\/)?(?:www\.|music\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?/gi;
 
 const vcerr = new MessageEmbed()
     .setTitle(`먼저 봇을 음성에 넣고 사용해 주십시오.`)
@@ -81,12 +81,12 @@ async function tts(client = new Client, message = new Message, args = Array, sdb
 
 // 유튜브 URL 생성
 async function geturl(message = new Message, text = String, options = Object) {
-    if (text.replace(/ +/g,'').replace(checkyturl,'') == '') {
+    if (text.replace(/ +/g,'').replace(checkyturl,'').length == 0) {
         try {
             options = {
                 volume: 0.08
             };
-            var yt = ytdl(`https://youtu.be/${text.replace(/ +/g,'').replace(checkytid, '')}`, { bitrate: 512000 }) || null;
+            var yt = ytdl(`http://www.youtube.com/watch?v=${text.replace(/ +/g,'').replace(checkytid, '').replace(/\&[a-z]+/g,'')}`, { bitrate: 512000 }) || null;
             message.delete();
             if (yt) return {
                 url: yt,
