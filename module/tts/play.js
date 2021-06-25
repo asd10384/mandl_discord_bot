@@ -48,8 +48,7 @@ async function play(serverid = String, channel = new Channel, text = '', options
 // 출력
 async function broadcast(channel = new Channel, url = String, options = Object) {
     channel.join().then(async function(connection) {
-        // const dispatcher = 
-        connection.play(url, options);
+        var dispatcher = connection.play(url, options);
     });
 }
 

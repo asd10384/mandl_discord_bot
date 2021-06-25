@@ -88,16 +88,19 @@ async function geturl(message = new Message, text = String, options = Object) {
             };
             var yt = ytdl(`http://www.youtube.com/watch?v=${text.replace(/ +/g,'').replace(checkytid, '').replace(/\&[a-z]+/g,'')}`, { bitrate: 512000 }) || null;
             message.delete();
-            if (yt) return {
-                url: yt,
-                options: options,
-                text: false
-            };
-            return {
-                url: 'youtubelinkerror',
-                options: options,
-                text: false
-            };
+            if (yt) {
+                return {
+                    url: yt,
+                    options: options,
+                    text: false
+                };
+            } else {
+                return {
+                    url: 'youtubelinkerror',
+                    options: options,
+                    text: false
+                };
+            }
         } catch(e) {
             return {
                 url: 'youtubelinkerror',
@@ -105,6 +108,11 @@ async function geturl(message = new Message, text = String, options = Object) {
                 text: false
             };
         }
+        return {
+            url: 'youtubelinkerror',
+            options: options,
+            text: false
+        };
     }
     return {
         url: msg(text),
