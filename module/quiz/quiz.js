@@ -294,7 +294,7 @@ async function anser(client = new Client, message = new Message, args = Array, s
         }
         if (format == '그림퀴즈') {
             np.setImage(link);
-            await broadcast(message, sdb, message.guild.me.voice.channel, `sound/dingdong.mp3`, {volume:0.5});
+            await broadcast(message.guild.me.voice.channel, `sound/dingdong.mp3`, {volume:0.5});
         }
         np.setTitle(`**정답 : ${name}**`)
             .setURL(link)
@@ -473,7 +473,7 @@ async function tensec(client = new Client, message = new Message, args = Array, 
 }, text = {
     desc: String,
 }) {
-    await broadcast(message, sdb, vchannel, `sound/dingdong.mp3`, {volume:0.5});
+    await broadcast(vchannel, `sound/dingdong.mp3`, {volume:0.5});
     const np = new MessageEmbed()
         .setTitle(`**${ulist.quiz} 설명**`)
         .setImage(`https://ytms.netlify.app/question_mark.png`)
