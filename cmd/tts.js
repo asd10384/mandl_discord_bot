@@ -97,6 +97,7 @@ module.exports = {
                 return;
             }
         }
+        timer.set(message, sdb, true);
         return await tts.tts(client, message, args, sdb, user);
     },
 };

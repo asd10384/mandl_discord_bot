@@ -60,25 +60,16 @@ client.on('message', async (message) => {
         if (!sdb) {
             await MDB.set.server(message);
         } else {
-            var atchitch = await db.get(`db.${message.guild.id}.selfcheck.autocheck`);
-            if (atchitch == null || atchitch == undefined || atchitch == false) {
-                await db.set(`db.${message.guild.id}.selfcheck.autocheck`, true);
-                await client.commands.get(`selfcheck`).autocheckinterval(client, message, sdb);
-            }
+            // var atchitch = await db.get(`db.${message.guild.id}.selfcheck.autocheck`);
+            // if (atchitch == null || atchitch == undefined || atchitch == false) {
+            //     await db.set(`db.${message.guild.id}.selfcheck.autocheck`, true);
+            //     await client.commands.get(`selfcheck`).autocheckinterval(client, message, sdb);
+            // }
             
             // 채팅 채널 연결
-            var ttsid = sdb.tts.ttschannelid;
-            if (ttsid == null || ttsid == undefined) {
-                ttsid = '0';
-            }
-            var quizid = sdb.quiz.qzchannelid;
-            if (quizid == null || quizid == undefined) {
-                quizid = '0';
-            }
-            var selfcheck = sdb.selfcheck.channelid;
-            if (selfcheck == null || selfcheck == undefined) {
-                selfcheck = '0';
-            }
+            var ttsid = sdb.tts.ttschannelid || 0;
+            var quizid = sdb.quiz.qzchannelid || 0;
+            var selfcheck = sdb.selfcheck.channelid || 0;
 
             // prefix 입력시
             if (message.content.startsWith(prefix)) {

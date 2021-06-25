@@ -50,33 +50,24 @@ async function tts(client = new Client, message = new Message, args = Array, sdb
             db.set(`db.${message.guild.id}.tts.timertime`, 600);
             var channel;
             if (!udb.ttsnomove) {
-                try {
-                    if (message.member.voice.channel) {
-                        channel = message.member.voice.channel;
-                    } else if (message.guild.me.voice.channel) {
-                        channel = message.guild.voice.channel;
-                    }
-                } catch (err) {
-                    log.errlog(err);
-                    return message.channel.send(vcerr).then(m => msgdelete(m, Number(process.env.deletetime)));
+                if (message.member.voice.channel) {
+                    channel = message.member.voice.channel || null;
+                } else if (message.guild.me.voice.channel) {
+                    channel = message.guild.voice.channel || null;
                 }
             } else {
-                try {
-                    if (message.guild.me.voice.channel) {
-                        channel = message.guild.me.voice.channel;
-                    } else if (message.member.voice.channel) {
-                        channel = message.member.voice.channel;
-                    }
-                } catch (err) {
-                    log.errlog(err);
-                    return message.channel.send(vcerr).then(m => msgdelete(m, Number(process.env.deletetime)));
+                if (message.guild.me.voice.channel) {
+                    channel = message.guild.me.voice.channel || null;
+                } else if (message.member.voice.channel) {
+                    channel = message.member.voice.channel || null;
                 }
             }
             if (!channel) return message.channel.send(vcerr).then(m => msgdelete(m, Number(process.env.deletetime)));
             if (url.text) {
-                return await play(message, sdb, channel, url.url, url.options);
+                return await play(message, channel, url.url, url.options);
+            } else {
+                return await broadcast(channel, url.url, url.options);
             }
-            return await broadcast(message, sdb, channel, url.url, url.options);
         } else {
             const music = new MessageEmbed()
                 .setTitle(`\` 재생 오류 \``)
@@ -90,22 +81,22 @@ async function tts(client = new Client, message = new Message, args = Array, sdb
 
 // 유튜브 URL 생성
 async function geturl(message = new Message, text = String, options = Object) {
-    if (text.replace(/ +/g,'').replace(checkyturl,'').length == 0) {
+    if (text.replace(/ +/g,'').replace(checkyturl,'') == '') {
         try {
             options = {
                 volume: 0.08
             };
             var yt = ytdl(`https://youtu.be/${text.replace(/ +/g,'').replace(checkytid, '')}`, { bitrate: 512000 }) || null;
             message.delete();
-            if (!yt) return {
+            if (yt) return {
+                url: yt,
+                options: options,
+                text: false
+            };
+            return {
                 url: 'youtubelinkerror',
                 options: options,
                 text: false
-            }
-            return {
-                url: yt,
-                options: options,
-                text: false,
             };
         } catch(e) {
             return {
@@ -118,16 +109,16 @@ async function geturl(message = new Message, text = String, options = Object) {
     return {
         url: msg(text),
         options: options,
-        text: true,
+        text: true
     };
 }
 // 유튜브 URL 생성 끝
 
 const repobj = eval(process.env.TTSMSG)[0] || require('./set/ttsmsg');
 function msg (text = '') {
-    text = text.replace(/<@\!?[(0-9)]{18}>/, '');
+    text = text.replace(/<@\!?[(0-9)]{18}>/g, '');
     for (i in repobj) {
-        if (text.includes(i)) text = text.split(i).join(repobj[i]);
+        text = text.replace(new RegExp(i, 'gi'), repobj[i]);
     }
     return text;
 }
