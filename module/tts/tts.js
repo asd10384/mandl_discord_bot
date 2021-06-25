@@ -1,7 +1,7 @@
 
 require('dotenv').config();
 const db = require('quick.db');
-const { MessageEmbed, Client, Message, Channel, User } = require('discord.js');
+const { MessageEmbed, Client, Message, User } = require('discord.js');
 const { broadcast, play } = require('./play');
 const MDB = require('../../MDB/data');
 const log = require('../../log/log');
@@ -64,7 +64,7 @@ async function tts(client = new Client, message = new Message, args = Array, sdb
             }
             if (!channel) return message.channel.send(vcerr).then(m => msgdelete(m, Number(process.env.deletetime)));
             if (url.text) {
-                return await play(message, channel, url.url, url.options);
+                return await play(message.guild.id, channel, url.url, url.options);
             } else {
                 return await broadcast(channel, url.url, url.options);
             }

@@ -1,8 +1,6 @@
 
 require('dotenv').config();
-const db = require('quick.db');
-const { Message, Channel } = require('discord.js');
-const MDB = require('../../MDB/data');
+const { Channel } = require('discord.js');
 const { writeFile, readFileSync } = require('fs');
 
 const { TextToSpeechClient } = require('@google-cloud/text-to-speech');
@@ -21,7 +19,7 @@ const snlist = Object.keys(sncheckobj);
 const sncheck = new RegExp(snlist.join('|'), 'gi');
 
 // TEXT -> tts.WAV로 변경
-async function play(message = new Message, channel = new Channel, text = '', options = Object) {
+async function play(serverid = String, channel = new Channel, text = '', options = Object) {
     var list = [];
     var output;
     text = text.replace(sncheck, (text) => {
@@ -40,7 +38,7 @@ async function play(message = new Message, channel = new Channel, text = '', opt
     }
 
     options['volume'] = 0.7;
-    var fileurl = `${message.guild.id}-${message.author.id}.wav`;
+    var fileurl = `${serverid}.wav`;
     writeFile(fileurl, output, () => {
         return broadcast(channel, fileurl, options);
     });
