@@ -118,7 +118,7 @@ const repobj = eval(process.env.TTSMSG)[0] || require('./set/ttsmsg');
 function msg (text = '') {
     text = text.replace(/<@\!?[(0-9)]{18}>/g, '');
     for (i in repobj) {
-        text = text.replace(new RegExp(i, 'gi'), repobj[i]);
+        text = text.replace(new RegExp(i, 'gi') || new RegExp('\\'+i, 'gi'), repobj[i]) || i;
     }
     return text;
 }
