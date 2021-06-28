@@ -115,7 +115,7 @@ async function geturl(message = new Message, text = String, options = Object) {
         };
     }
     return {
-        url: msg(text),
+        url: msg(message, text),
         options: options,
         text: true
     };
@@ -123,8 +123,11 @@ async function geturl(message = new Message, text = String, options = Object) {
 // 유튜브 URL 생성 끝
 
 const repobj = eval(process.env.TTSMSG)[0] || require('./set/ttsmsg');
-function msg (text = '') {
-    text = text.replace(/<@\!?[(0-9)]{18}>/g, '');
+function msg(message = new Message, text = '') {
+    text = text.replace(/<@\!?[(0-9)]{18}>/g, (text) => {
+        var user = message.guild.members.cache.get(text.replace(/[^0-9]/g,'')) || null;
+        return (user) ? (user.nickname) ? user.nickname.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi,'') : user.user.username.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi,'') : '';
+    });
     for (i in repobj) {
         text = text.replace(new RegExp(i, 'gi') || new RegExp('\\'+i, 'gi'), repobj[i]) || i;
     }
