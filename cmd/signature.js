@@ -31,8 +31,8 @@ const per = new MessageEmbed()
 
 module.exports = {
     name: 'signature',
-    aliases: ['시그니쳐'],
-    description: '시그니쳐 확인',
+    aliases: ['시그니처','시그니쳐'],
+    description: '시그니처 확인',
     async run (client = new Client, message = new Message, args = Array, sdb = MDB.object.server, user = new User) {
         var pp = db.get(`dp.prefix.${message.member.id}`);
         if (pp == (null || undefined)) {
@@ -50,7 +50,7 @@ module.exports = {
             text += `\n`;
         }
         const embed = new MessageEmbed()
-            .setTitle(`\` 시그니쳐 확인 \``)
+            .setTitle(`\` 시그니처 확인 \``)
             .setDescription(text)
             .setColor('ORANGE')
             .setFooter('- 뒤에있는게 입력하는 문구');
