@@ -58,6 +58,12 @@ const snobj = [
             '아이고 난'
         ],
         url: '케인/아이고난'
+    },
+    {
+        name: [
+            '어허'
+        ],
+        url: '브베/어허'
     }
 ];
 var sncheckobj = {};
