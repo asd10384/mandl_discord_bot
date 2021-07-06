@@ -70,6 +70,16 @@ const snobj = [
             '어허'
         ],
         url: '브베/어허'
+    },
+    {
+        name: [
+            '샤를르클레르',
+            '샤를 르클레르',
+            '찰스르클레르',
+            '찰스 르클레르',
+            'Charles Leclerc'
+        ],
+        url: 'f1/샤를르클레르'
     }
 ];
 var sncheckobj = {};
