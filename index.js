@@ -88,7 +88,7 @@ client.on('message', async (message) => {
                     await command.run(client, message, args, sdb, message.member.user);
                 } catch(error) {
                     if (commandName == '' || commandName == ';' || commandName == undefined || commandName == null) return ;
-                    // 코드 확인
+                    // 오류 확인
                     // log.errlog(error);
                     const embed = new MessageEmbed()
                         .setColor('DARK_RED')
