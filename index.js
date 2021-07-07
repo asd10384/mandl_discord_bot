@@ -6,7 +6,7 @@ const { readdirSync } = require('fs');
 const { join } = require('path');
 const db = require('quick.db');
 const log = require('./log/log');
-const { ansermsg } = require('./module/quiz/ansermsg');
+const ansermsg = require('./module/quiz/ansermsg');
 var checkyturl = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g;
 var checkmsg = /\;+/g;
 
@@ -108,7 +108,7 @@ client.on('message', async (message) => {
                     if (sdb.quiz.start.start) {
                         return await ansermsg(client, message, args, sdb, message.member.user);
                     } else {
-                        command = client.commands.get('qz');
+                        command = client.commands.get('quiz');
                         msgdelete(message, 105);
                     }
                 }
@@ -129,7 +129,7 @@ function msgdelete(m = new Message, t = Number) {
     }, t);
 }
 
-const { reac } = require('./client/reaction');
+const reac = require('./client/reaction');
 client.on('messageReactionAdd', async (reaction, user) => {
     await reac(client, reaction, user);
 });

@@ -1,14 +1,10 @@
 
 require('dotenv').config();
 const db = require('quick.db');
-const { MessageEmbed, Client, Message, Channel } = require('discord.js');
+const { MessageEmbed, Client, Message } = require('discord.js');
 const MDB = require('../../MDB/data');
 
-module.exports = {
-    score,
-};
-
-async function score(client = new Client, message = new Message, args = [], sdb = MDB.object.server) {
+module.exports = score = async function (client = new Client, message = new Message, args = [], sdb = MDB.object.server) {
     var score = db.get(`db.${message.guild.id}.quiz.score`);
     var skip = sdb.quiz.quiz.skipcount;
     var text = '';

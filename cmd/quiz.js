@@ -5,8 +5,10 @@ const { MessageEmbed, Client, Message, User } = require('discord.js');
 const MDB = require('../MDB/data');
 const log = require('../log/log');
 
-const check = require('../module/quiz/check');
-const quiz = require('../module/quiz/quiz');
+const checkvoice = require('../module/quiz/check');
+const start = require('../module/quiz/start');
+const end = require('../module/quiz/end');
+const { anser } = require('../module/quiz/quiz');
 const { hint } = require('../module/quiz/user');
 
 /*
@@ -40,8 +42,8 @@ const emerr = new MessageEmbed()
     .setColor('RED');
 
 module.exports = {
-    name: 'qz',
-    aliases: ['퀴즈','quiz'],
+    name: 'quiz',
+    aliases: ['퀴즈','qz'],
     description: '퀴즈 도움말',
     async run (client = new Client, message = new Message, args = Array, sdb = MDB.object.server, user = new User) {
         var pp = db.get(`dp.prefix.${message.member.id}`);
@@ -53,12 +55,12 @@ module.exports = {
 
         if (args[0] == '시작' || args[0] == 'start') {
             // 음성확인
-            var vchannel = await check.voice(message, sdb);
+            var vchannel = await checkvoice(message, sdb);
             if (!vchannel.success) return message.channel.send(vchannelerr).then(m => msgdelete(m, Number(process.env.deletetime)));
             
             if (!sdb.quiz.start.embed) {
                 sdb.quiz.start.embed = true;
-                return await quiz.start(client, message, args, sdb, vchannel, user);
+                return await start.start(client, message, args, sdb, vchannel, user);
             } else {
                 emerr.setDescription(`
                     이미 퀴즈 시작을 입력하셨습니다.
@@ -71,13 +73,13 @@ module.exports = {
         }
         if (args[0] == '종료' || args[0] == 'stop') {
             sdb.quiz.start.embed = false;
-            return await quiz.end(client, message, sdb);
+            return await end(client, message, sdb);
         }
         if (args[0] == '힌트' || args[0] == 'hint') {
             return await hint(client, message, ['관리자'], sdb, user);
         }
         if (args[0] == '스킵' || args[0] == 'skip') {
-            return await quiz.anser(client, message, ['스킵','관리자'], sdb, user);
+            return await anser(client, message, ['스킵','관리자'], sdb, user);
         }
         if (args[0] == '설정' || args[0] == 'setting') {
             return message.channel.send(`현재 제작중`).then(m => msgdelete(m, Number(process.env.deletetime)));

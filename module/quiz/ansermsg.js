@@ -4,14 +4,10 @@ const db = require('quick.db');
 const { MessageEmbed, Client, Message, Channel, User } = require('discord.js');
 const MDB = require('../../MDB/data');
 
-const quiz = require('./quiz');
+const { anser } = require('./quiz');
 const { hint, skip } = require('./user');
 
-module.exports = {
-    ansermsg,
-};
-
-async function ansermsg(client = new Client, message = new Message, args = Array, sdb = MDB.object.server, user = new User) {
+module.exports = ansermsg = async function (client = new Client, message = new Message, args = Array, sdb = MDB.object.server, user = new User) {
     const member = message.guild.members.cache.get(user.id);
     if (sdb.quiz.vcid !== member.voice.channel.id) {
         errmsg(message, user, `채팅 입력`);
@@ -34,7 +30,7 @@ async function ansermsg(client = new Client, message = new Message, args = Array
     if (text == anser_text) {
         sdb.quiz.start.user = false;
         await sdb.save();
-        return await quiz.anser(client, message, args, sdb, user);
+        return await anser(client, message, args, sdb, user);
     }
 }
 

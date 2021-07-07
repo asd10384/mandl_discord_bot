@@ -1,19 +1,14 @@
 
 require('dotenv').config();
 const { Client, User, ReactionCollector, MessageEmbed, Message } = require('discord.js');
-const db = require('quick.db');
 const MDB = require('../MDB/data');
 const log = require('../log/log');
 const sdata = MDB.module.server();
 
-const quiz = require('../module/quiz/quiz');
+const { start_em } = require('../module/quiz/start');
 const { hint, skip } = require('../module/quiz/user');
 
-module.exports = {
-    reac,
-};
-
-async function reac (client = new Client, reaction = new ReactionCollector, user = new User) {
+module.exports = reac = async function  (client = new Client, reaction = new ReactionCollector, user = new User) {
     if (user.bot) return;
     if (!reaction.message.guild) return;
     return await go(client, reaction, user);
@@ -93,7 +88,7 @@ async function go(client = new Client, reaction = new ReactionCollector, user = 
                 if (!vchannel) {
                     var vchannel = member.voice.channel;
                 }
-                return await quiz.start_em(client, message, [], sdb, vchannel, user, {first: false});
+                return await start_em(client, message, [], sdb, vchannel, user, {first: false});
             }
         }
     });

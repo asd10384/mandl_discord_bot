@@ -1,7 +1,7 @@
 
 require('dotenv').config();
 const db = require('quick.db');
-const { MessageEmbed, Client, Message, Channel } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const dfpreifx = process.env.prefix;
 
 module.exports = {

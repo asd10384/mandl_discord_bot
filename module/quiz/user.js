@@ -1,10 +1,9 @@
 
 require('dotenv').config();
-const db = require('quick.db');
-const { MessageEmbed, Client, Message, Channel, User } = require('discord.js');
+const { MessageEmbed, Client, Message, User } = require('discord.js');
 const MDB = require('../../MDB/data');
-
-const quiz = require('./quiz');
+const { anser } = require('./quiz');
+const end = require('./end');
 
 const em = new MessageEmbed()
     .setColor('ORANGE');
@@ -26,7 +25,7 @@ async function hint(client = new Client, message = new Message, args = Array, sd
     try {
         usercount = Math.floor(message.guild.me.voice.channel.members.size / 2);
     } catch(err) {
-        await quiz.end(client, message, sdb);
+        await end(client, message, sdb);
     }
     var hint = sdb.quiz.user.hint;
     const userid = user.id;
@@ -81,7 +80,7 @@ async function skip(client = new Client, message = new Message, args = Array, sd
     try {
         usercount = Math.floor(message.guild.me.voice.channel.members.size / 2);
     } catch(err) {
-        return await quiz.end(client, message, sdb);
+        return await end(client, message, sdb);
     }
     var skip = sdb.quiz.user.skip;
     const userid = user.id;
@@ -95,7 +94,7 @@ async function skip(client = new Client, message = new Message, args = Array, sd
     if (skip.length >= usercount) {
         sdb.quiz.user.skip = [];
         await sdb.save();
-        return await quiz.anser(client, message, ['스킵'], sdb, user);
+        return await anser(client, message, ['스킵'], sdb, user);
     }
     sdb.quiz.user.skip = skip;
     await sdb.save();
