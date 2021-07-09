@@ -35,8 +35,9 @@ module.exports = ansermsg = async function (client = new Client, message = new M
 }
 
 async function errmsg(message = new Message, user = new User, why = String) {
+    const member = message.guild.members.cache.get(user.id) || null;
     const em = new MessageEmbed()
-        .setTitle(`**${user.username} 님 ${why} 오류**`)
+        .setTitle(`**${(member && member.nickname) ? member.nickname : user.username} 님 ${why} 오류**`)
         .setDescription(`**같은 음성채널에서**\n**사용해주세요.**`)
         .setColor('RED');
     return message.channel.send(em);

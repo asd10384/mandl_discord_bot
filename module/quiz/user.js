@@ -29,12 +29,13 @@ async function hint(client = new Client, message = new Message, args = Array, sd
     }
     var hint = sdb.quiz.user.hint;
     const userid = user.id;
+    const member = message.guild.members.cache.get(userid) || null;
     var text = '';
     if (hint.includes(userid)) {
-        text = `**${user.username}** 님은 이미 힌트를 요청했습니다.`
+        text = `**${(member && member.nickname) ? member.nickname : user.username}** 님은 이미 힌트를 요청했습니다.`
     } else {
         hint.push(userid);
-        text = `**${user.username}** 님이 힌트를 요청했습니다.`;
+        text = `**${(member && member.nickname) ? member.nickname : user.username}** 님이 힌트를 요청했습니다.`;
     }
     if (hint.length >= usercount || (args[0] == '관리자')) {
         sdb.quiz.start.hint = false;
@@ -84,12 +85,13 @@ async function skip(client = new Client, message = new Message, args = Array, sd
     }
     var skip = sdb.quiz.user.skip;
     const userid = user.id;
+    const member = message.guild.members.cache.get(userid) || null;
     var text = '';
     if (skip.includes(userid)) {
-        text = `**${user.username}** 님은 이미 스킵을 요청했습니다.`
+        text = `**${(member && member.nickname) ? member.nickname : user.username}** 님은 이미 스킵을 요청했습니다.`
     } else {
         skip.push(userid);
-        text = `**${user.username}** 님이 스킵을 요청했습니다.`;
+        text = `**${(member && member.nickname) ? member.nickname : user.username}** 님이 스킵을 요청했습니다.`;
     }
     if (skip.length >= usercount) {
         sdb.quiz.user.skip = [];
