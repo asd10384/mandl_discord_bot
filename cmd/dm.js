@@ -45,15 +45,15 @@ module.exports = {
         if (args[0]) {
             const tuser = message.guild.members.cache.get(args[0].replace(/[^0-9]/g, '')) || undefined;
             if (tuser) {
-                const user = tuser.user;
+                const username = (tuser && tuser.nickname) ? tuser.nickname : tuser.user.username;
                 if (args[1]) {
                     var text = args.slice(1).join(' ');
                     tuser.send(text).catch(() => {
-                        embed.setTitle(`\` ${user.username} \`의 dm 을 찾을수 없습니다.`)
+                        embed.setTitle(`\` ${username} \`의 dm 을 찾을수 없습니다.`)
                             .setColor('RED');
                         message.member.user.send(embed).then(m => msgdelete(m, Number(process.env.deletetime)*2));
                     }).then(() => {
-                        embed.setTitle(`\` ${user.username} \`에게 성공적으로 dm 을 보냈습니다.`)
+                        embed.setTitle(`\` ${username} \`에게 성공적으로 dm 을 보냈습니다.`)
                             .setDescription(`\` 내용 \`\n\n${text}`);
                         message.member.user.send(embed).then(m => msgdelete(m, Number(process.env.deletetime)*2));
                     });

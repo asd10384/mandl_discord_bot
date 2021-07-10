@@ -45,7 +45,7 @@ module.exports = {
             datelist = format.date(user.joinedAt);
             date = `${datelist[0]}년 ${az(datelist[1], 2)}월 ${az(datelist[2], 2)}일`;
 
-            username = user.user.username;
+            username = (user && user.nickname) ? user.nickname : user.user.username;
             avatar = user.user.displayAvatarURL();
             tag = message.author.tag;
             id = message.author.id;
@@ -61,7 +61,7 @@ module.exports = {
                 datelist = format.date(user2.joinedAt);
                 date = `${datelist[0]}년 ${az(datelist[1], 2)}월 ${az(datelist[2], 2)}일`;
 
-                username = user2.user.username;
+                username = (user2 && user2.nickname) ? user2.nickname : user2.user.username;
                 avatar = member.user.displayAvatarURL();
                 tag = member.user.tag;
                 id = member.user.id;
