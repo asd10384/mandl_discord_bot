@@ -140,7 +140,8 @@ async function anser(client = new Client, message = new Message, args = Array, s
     sdb.quiz.user.skip = [];
 
     try {
-        var anser_user = user.username;
+        var member = message.guild.members.cache.get(user.id) || null;
+        var anser_user = (member && member.nickname) ? member.nickname : user.username;
         if (args[0] == '스킵' || args[0] == 'skip') {
             anser_user = (args[1] == '시간초과') ? '시간초과로 스킵되었습니다.' : (args[1] == '관리자') ? `${message.member.user.username} 님이 강제로 스킵했습니다.` : '스킵하셨습니다.';
             sdb.quiz.quiz.skipcount = sdb.quiz.quiz.skipcount+1;
