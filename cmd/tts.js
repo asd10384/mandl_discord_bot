@@ -73,28 +73,18 @@ module.exports = {
             if (args[1] == '활성화' || args[1] == 'on') onoff = 'on';
             if (args[1] == '비활성화' || args[1] == 'off') onoff = 'off';
             if (onoff) {
-                Udata.findOne({
-                    userID: user.id
-                }, async (err, db1) => {
-                    var udb = MDB.object.user;
-                    udb = db1;
-                    if (!udb) {
-                        await MDB.set.user(user);
-                    }
-                    if (onoff == 'on') {
-                        if (!udb.ttsnomove) return message.channel.send(eb(pp, 'RED', `오류`, `봇 이동이 이미 **활성화** 되어있습니다.`)).then(m => msgdelete(m, Number(process.env.deletetime)));
-                        udb.ttsnomove = false;
-                        udb.save().catch((err) => log.errlog(err));
-                        return message.channel.send(eb(pp, 'ORANGE', `활성화`, `봇 이동이 **활성화** 되었습니다.`)).then(m => msgdelete(m, Number(process.env.deletetime))*3);
-                    }
-                    if (onoff == 'off') {
-                        if (udb.ttsnomove) return message.channel.send(eb(pp, 'RED', `오류`, `봇 이동이 이미 **비활성화** 되어있습니다.`)).then(m => msgdelete(m, Number(process.env.deletetime)));
-                        udb.ttsnomove = true;
-                        udb.save().catch((err) => log.errlog(err));
-                        return message.channel.send(eb(pp, 'ORANGE', `비활성화`, `봇 이동이 **비활성화** 되었습니다.`)).then(m => msgdelete(m, Number(process.env.deletetime))*3);
-                    }
-                });
-                return;
+                if (onoff == 'on') {
+                    if (!sdb.tts.move) return message.channel.send(eb(pp, 'RED', `오류`, `봇 이동이 이미 **활성화** 되어있습니다.`)).then(m => msgdelete(m, Number(process.env.deletetime)));
+                    sdb.tts.move = false;
+                    sdb.save().catch((err) => log.errlog(err));
+                    return message.channel.send(eb(pp, 'ORANGE', `활성화`, `봇 이동이 **활성화** 되었습니다.`)).then(m => msgdelete(m, Number(process.env.deletetime))*3);
+                }
+                if (onoff == 'off') {
+                    if (sdb.tts.move) return message.channel.send(eb(pp, 'RED', `오류`, `봇 이동이 이미 **비활성화** 되어있습니다.`)).then(m => msgdelete(m, Number(process.env.deletetime)));
+                    sdb.tts.move = true;
+                    sdb.save().catch((err) => log.errlog(err));
+                    return message.channel.send(eb(pp, 'ORANGE', `비활성화`, `봇 이동이 **비활성화** 되었습니다.`)).then(m => msgdelete(m, Number(process.env.deletetime))*3);
+                }
             }
         }
         ttstimer.set(message, sdb, true);
