@@ -6,15 +6,15 @@ const MDB = require('../MDB/data');
 const log = require('../log/log');
 
 const msg = require('../module/quiz/msg');
-const quiz = require('../module/quiz/quiz');
+const end = require('../module/quiz/end');
 
 const per = new MessageEmbed()
     .setTitle(`이 명령어를 사용할 권한이 없습니다.`)
     .setColor('RED');
 
 module.exports = {
-    name: 'qzset',
-    aliases: ['퀴즈설정','quizset'],
+    name: 'quizset',
+    aliases: ['퀴즈설정','qzset'],
     description: '퀴즈채널을 만들고 봇과 연결함',
     async run (client = new Client, message = new Message, args = Array, sdb = MDB.object.server, user = new User) {
         var pp = db.get(`dp.prefix.${message.member.id}`);
@@ -47,7 +47,7 @@ module.exports = {
             });
         });
         return setTimeout(async () => {
-            await quiz.end(client, message, sdb);
+            await end(client, message, sdb);
         }, 3000);
     },
 };
