@@ -25,7 +25,6 @@ const out = {
             name: String,
             userID: String,
             tts: Boolean,
-            ttsnomove: Boolean,
             selfcheck: {
                 area: String,
                 school: String,
@@ -33,6 +32,7 @@ const out = {
                 birthday: String,
                 password: String,
             },
+            admin: Boolean
         },
         server: {
             serverid: String,
@@ -81,6 +81,7 @@ const out = {
             tts: {
                 ttschannelid: String,
                 tts: Boolean,
+                move: Boolean
             },
             selfcheck: {
                 channelid: String,
@@ -91,6 +92,7 @@ const out = {
                 set: Array,
                 make: Array,
             },
+            update: String,
         },
         patchnote: {
             type: String,
@@ -134,7 +136,6 @@ async function set_user(user = new User) {
         name: user.username,
         userID: user.id,
         tts: true,
-        ttsnomove: false,
         selfcheck: {
             area: '',
             school: '',
@@ -142,6 +143,7 @@ async function set_user(user = new User) {
             birthday: '',
             password: '',
         },
+        admin: false
     });
     return newdata.save().catch(err => log.errlog(err));
 }
@@ -198,12 +200,14 @@ async function set_server(message = new Message) {
         tts: {
             ttschannelid: '',
             tts: true,
+            move: true
         },
         role: [],
         autovch: {
             set: [],
             make: [],
         },
+        update: ''
     });
     return newdata.save().catch(err => log.errlog(err));
 }
