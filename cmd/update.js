@@ -43,7 +43,7 @@ module.exports = {
         if (!(message.member.permissions.has('ADMINISTRATOR') || message.member.roles.cache.some(r=>sdb.role.includes(r.id)))) return message.channel.send(per).then(m => msgdelete(m, Number(process.env.deletetime)));
 
         if (args[0] == '채널생성') {
-            return message.guild.channels.create(`📃업데이트`, { // ${client.user.username}-음악퀴즈채널
+            message.guild.channels.create(`📃업데이트`, { // ${client.user.username}-음악퀴즈채널
                 type: 'text',
                 topic: `패치내용이 기록됩니다.`,
                 permissionOverwrites: [{
@@ -55,13 +55,14 @@ module.exports = {
                 sdb.update = channel.id;
                 sdb.save().catch(err => log.errlog(err));
             });
+            return;
         }
         if (args[0] == '전송') {
             var udb = MDB.object.user;
             udb = await udata.findOne({userID: user.id});
             if (udb.admin) {
                 log.botlog(message, `% 업데이트 사항 %\n${args.slice(1).join(' ')}`, new Date());
-                return sdata.find().then(async (db2_list) => {
+                sdata.find().then(async (db2_list) => {
                     var sdb2 = MDB.object.server;
                     for (db2 of db2_list) {
                         sdb2 = db2;
@@ -77,6 +78,7 @@ module.exports = {
                         }
                     }
                 });
+                return;
             } else {
                 return message.channel.send(per).then(m => msgdelete(m, Number(process.env.deletetime)));
             }
