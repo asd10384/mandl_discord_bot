@@ -49,7 +49,7 @@ async function tts(client = new Client, message = new Message, args = Array, sdb
         if (sdb.tts.tts) {
             db.set(`db.${message.guild.id}.tts.timertime`, 600);
             var channel;
-            if (!udb.ttsnomove) {
+            if (sdb.tts.move) {
                 if (message.member.voice.channel) {
                     channel = message.member.voice.channel || null;
                 } else if (message.guild.me.voice.channel) {
