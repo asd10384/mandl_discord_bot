@@ -67,7 +67,7 @@ module.exports = {
                     for (db2 of db2_list) {
                         sdb2 = db2;
                         if (sdb2.update) {
-                            var ch = client.guilds.cache.get(sdb2.serverid).channels.cache.get(sdb2.update) || null;
+                            var ch = client.channels.cache.get(sdb2.update) || null;
                             if (ch) ch.send(
                                 new MessageEmbed()
                                     .setAuthor(client.user.username, client.user.avatarURL({size:1024,format:'png',dynamic:true}))
