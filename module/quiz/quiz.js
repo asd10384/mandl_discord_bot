@@ -6,6 +6,9 @@ const { MessageEmbed, Client, Message, Channel, User } = require('discord.js');
 const MDB = require('../../MDB/data');
 const log = require('../../log/log');
 
+const HttpsProxyAgent = require('https-proxy-agent');
+const agent = HttpsProxyAgent(process.env.PROXY);
+
 const mqscore = require('./score');
 const { play, broadcast } = require('../tts/play');
 const allmsgdelete = require('./msgdelete');
@@ -57,7 +60,8 @@ async function music(client = new Client, message = new Message, args = Array, s
             await timer.timer(client, message, sdb);
             const dispatcher = connection.play(ytdl(link, {
                 bitrate: 512000,
-                quality: 'highestaudio'
+                quality: 'highestaudio',
+                requestOptions: {agent}
             }), {volume: 0.07});
             sdb.quiz.start.user = true;
             sdb.quiz.start.hint = true;
