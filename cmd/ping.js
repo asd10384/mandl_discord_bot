@@ -8,12 +8,7 @@ module.exports = {
     name: 'ping',
     aliases: ['핑'],
     description: '핑 확인',
-    async run (client = new Client, message = new Message, args = Array, sdb = MDB.object.server, user = new User) {
-        var pp = db.get(`dp.prefix.${message.member.id}`);
-        if (pp == (null || undefined)) {
-            await db.set(`db.prefix.${message.member.id}`, process.env.prefix);
-            pp = process.env.prefix;
-        }
+    async run (client = new Client, message = new Message, args = new Array, pp = process.env.prefix, sdb = MDB.object.server, user = new User) {
         const ping = new MessageEmbed()
             .setTitle(`\` PONG! \``)
             .setDescription(`🏓 \` ${client.ws.ping} \` ms`)

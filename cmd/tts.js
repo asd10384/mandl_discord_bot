@@ -18,12 +18,7 @@ module.exports = {
     name: 'tts',
     aliases: ['ㅅㅅㄴ'],
     description: `${process.env.prefix}tts help`,
-    async run (client = new Client, message = new Message, args = Array, sdb = MDB.object.server, user = new User, chat = false) {
-        var pp = db.get(`dp.prefix.${message.member.id}`);
-        if (pp == (null || undefined)) {
-            await db.set(`db.prefix.${message.member.id}`, process.env.prefix);
-            pp = process.env.prefix;
-        }
+    async run (client = new Client, message = new Message, args = new Array, pp = process.env.prefix, sdb = MDB.object.server, user = new User, chat = false) {
         // if (!(message.member.permissions.has('ADMINISTRATOR') || message.member.roles.cache.some(r=>sdb.role.includes(r.id)))) return message.channel.send(per).then(m => msgdelete(m, Number(process.env.deletetime)));
 
         if (!args[0]) return;
@@ -56,7 +51,7 @@ module.exports = {
         }
         if (args[0] == 'channelset' || args[0] == '채널설정') {
             const command = client.commands.get('ttsset');
-            return await command.run(client, message, args, sdb);
+            return await command.run(client, message, args, pp, sdb, user);
         }
         if (args[0] == 'ban' || args[0] == '밴' || args[0] == '뮤트') {
             if (chat) msgdelete(message, 50);

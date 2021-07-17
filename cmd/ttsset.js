@@ -13,12 +13,7 @@ module.exports = {
     name: 'ttsset',
     aliases: ['tts설정'],
     description: 'tts채널을 만들고 봇과 연결함',
-    async run (client = new Client, message = new Message, args = Array, sdb = MDB.object.server, user = new User) {
-        var pp = db.get(`dp.prefix.${message.member.id}`);
-        if (pp == (null || undefined)) {
-            await db.set(`db.prefix.${message.member.id}`, process.env.prefix);
-            pp = process.env.prefix;
-        }
+    async run (client = new Client, message = new Message, args = new Array, pp = process.env.prefix, sdb = MDB.object.server, user = new User) {
         const dfprefix = process.env.prefix;
         if (!(message.member.permissions.has('ADMINISTRATOR') || message.member.roles.cache.some(r=>sdb.role.includes(r.id)))) return message.channel.send(per).then(m => msgdelete(m, Number(process.env.deletetime)));
 

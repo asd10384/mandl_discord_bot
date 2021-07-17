@@ -11,7 +11,8 @@ var checkyturl = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch
 var checkmsg = /\;+/g;
 
 // env
-const dfprefix = process.env.prefix;
+// prefix 설정
+const prefix = process.env.prefix;
 const deletetime = Number(process.env.deletetime) || 6000;
 
 // DB
@@ -43,13 +44,6 @@ client.on('message', async (message) => {
     // 봇이나 디엠 메시지 무시
     if (message.author.bot) return;
     if (message.channel.type === 'dm') return;
-
-    // prefix 설정
-    var prefix = await db.get(`db.prefix.${message.member.id}`);
-    if (prefix == (null || undefined)) {
-        await db.set(`db.prefix.${message.member.id}`, dfprefix);
-        prefix = dfprefix;
-    }
 
     await sdata.findOne({
         serverid: message.guild.id
@@ -85,7 +79,7 @@ client.on('message', async (message) => {
     
                 try {
                     // 명령어 실행
-                    await command.run(client, message, args, sdb, message.member.user);
+                    await command.run(client, message, args, prefix, sdb, message.member.user);
                 } catch(error) {
                     if (commandName == '' || commandName == ';' || commandName == undefined || commandName == null) return ;
                     // 오류 확인
@@ -115,7 +109,7 @@ client.on('message', async (message) => {
                 if (selfcheck == message.channel.id) {
                     return msgdelete(message, 100);
                 }
-                if (command) return command.run(client, message, args, sdb, message.member.user, true);
+                if (command) return command.run(client, message, args, prefix, sdb, message.member.user, true);
             }
         }
     });

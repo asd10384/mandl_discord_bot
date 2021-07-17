@@ -12,12 +12,7 @@ module.exports = {
     name: 'join',
     aliases: ['참가'],
     description: '음성대화방에 참가',
-    async run (client = new Client, message = new Message, args = Array, sdb = MDB.object.server, user = new User) {
-        var pp = db.get(`dp.prefix.${message.member.id}`);
-        if (pp == (null || undefined)) {
-            await db.set(`db.prefix.${message.member.id}`, process.env.prefix);
-            pp = process.env.prefix;
-        }
+    async run (client = new Client, message = new Message, args = new Array, pp = process.env.prefix, sdb = MDB.object.server, user = new User) {
         // if (!(message.member.permissions.has('ADMINISTRATOR') || message.member.roles.cache.some(r=>sdb.role.includes(r.id)))) return message.channel.send(per).then(m => msgdelete(m, Number(process.env.deletetime)));
 
         
