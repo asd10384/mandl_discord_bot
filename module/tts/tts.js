@@ -47,7 +47,7 @@ async function tts(client = new Client, message = new Message, args = Array, sdb
             return message.channel.send(yterr).then(m => msgdelete(m, Number(process.env.deletetime)));
         }
         if (sdb.tts.tts) {
-            db.set(`db.${message.guild.id}.tts.timertime`, 600);
+            db.set(`db.${message.guild.id}.tts.timertime`, Number(process.env.ttsout)*60);
             var channel;
             if (sdb.tts.move) {
                 if (message.member.voice.channel) {
