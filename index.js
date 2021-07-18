@@ -8,10 +8,8 @@ const db = require('quick.db');
 const log = require('./log/log');
 const ansermsg = require('./module/quiz/ansermsg');
 var checkyturl = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g;
-var checkmsg = /\;+/g;
 
 // env
-// prefix 설정
 const prefix = process.env.prefix;
 const deletetime = Number(process.env.deletetime) || 6000;
 
@@ -63,13 +61,13 @@ client.on('message', async (message) => {
             // 채팅 채널 연결
             var ttsid = sdb.tts.ttschannelid || 0;
             var quizid = sdb.quiz.qzchannelid || 0;
-            var selfcheck = sdb.selfcheck.channelid || 0;
+            // var selfcheck = sdb.selfcheck.channelid || 0;
 
             // prefix 입력시
             if (message.content.startsWith(prefix)) {
                 const content = message.content.slice(prefix.length).trim();
                 if (checkyturl.exec(content)) return;
-                if (checkmsg.exec(content)) return;
+                if (/\;+/g.exec(content)) return;
 
                 const args = content.split(/ +/g);
                 const commandName = args.shift().toLowerCase();
@@ -106,9 +104,9 @@ client.on('message', async (message) => {
                         msgdelete(message, 105);
                     }
                 }
-                if (selfcheck == message.channel.id) {
-                    return msgdelete(message, 100);
-                }
+                // if (selfcheck == message.channel.id) {
+                //     return msgdelete(message, 100);
+                // }
                 if (command) return command.run(client, message, args, prefix, sdb, message.member.user, true);
             }
         }
