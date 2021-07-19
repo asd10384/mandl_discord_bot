@@ -7,7 +7,7 @@ const MDB = require('../../MDB/data');
 const log = require('../../log/log');
 
 const HttpsProxyAgent = require('https-proxy-agent');
-const agent = HttpsProxyAgent(process.env.PROXY);
+const agent = HttpsProxyAgent(process.env.PROXY); // 보류
 
 const mqscore = require('./score');
 const { play, broadcast } = require('../tts/play');
@@ -60,7 +60,7 @@ async function music(client = new Client, message = new Message, args = Array, s
             await timer.timer(client, message, sdb);
             const dispatcher = connection.play(ytdl(link, {
                 quality: 'highestaudio',
-                requestOptions: {agent}
+                // requestOptions: {agent}
             }), {volume: 0.07});
             sdb.quiz.start.user = true;
             sdb.quiz.start.hint = true;
