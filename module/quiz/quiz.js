@@ -165,13 +165,15 @@ async function anser(client = new Client, message = new Message, args = Array, s
         var vocal = sdb.quiz.quiz.vocal[count];
         var link = sdb.quiz.quiz.link[count];
         var format = sdb.quiz.quiz.format;
+        var customimg = sdb.quiz.quiz.customimg || null;
+        var quizurl = sdb.quiz.quiz.quizurl;
         var yturl = link.replace(chack, '').replace(/(?:&(.+))/gi, '');
         var list = `퀴즈를 종료하시려면 \` ${process.env.prefix}퀴즈 종료 \`를 입력해주세요.`;
         var np = new MessageEmbed();
         
         if (format == '음악퀴즈') {
             vocal = `**가수 : ${vocal}**`;
-            np.setImage(`https://img.youtube.com/vi/${yturl}/sddefault.jpg`);
+            np.setImage((customimg) ? `${process.env.mqsite}/customimg/${quizurl}/${name}.png` || `${process.env.mqsite}/customimg/${quizurl}/${name}.jpg` || `https://img.youtube.com/vi/${yturl}/sddefault.jpg` || '' : `https://img.youtube.com/vi/${yturl}/sddefault.jpg` || '');
         }
         if (format == '그림퀴즈') {
             np.setImage(link);

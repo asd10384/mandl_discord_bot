@@ -116,6 +116,7 @@ async function start_em (client = new Client, message = new Message, args = Arra
                                     data.page.p2 = 0;
                                     data.page.p3 = 0;
                                     data.page.p4 = 0;
+                                    data.quiz.quizurl = ulist.url.replace(new RegExp(`${process.env.mqsite}|.html`, 'g'), '');
                                     await db.set(`db.${message.guild.id}.mq.timer`, false);
                                     return await ready(client, message, args, sdb, vchannel, user, ulist);
                                 }

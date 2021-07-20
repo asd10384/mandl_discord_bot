@@ -4,14 +4,19 @@ const { Client } = require('discord.js');
 const MDB = require('../../MDB/data');
 const log = require('../../log/log');
 
-module.exports = allmsgdelete = async function (client = new Client, sdb = MDB.object.server, time = Number || 50) {
+module.exports = allmsgdelete;
+
+async function allmsgdelete (client = new Client, sdb = MDB.object.server, time = Number || 50) {
     try {
-        var c = client.channels.cache.get(sdb.quiz.qzchannelid);
+        var ch = client.channels.cache.get(sdb.quiz.qzchannelid) || null;
         setTimeout(async function() {
-            await c.messages.fetch({ after: sdb.quiz.msg.npid }).then(async function(msg) {
-                if (msg.size <= 1) return;
-                await c.bulkDelete(msg.size);
-            });
+            if (ch) {
+                await ch.messages.fetch({ after: sdb.quiz.msg.npid }).then(async function(msg) {
+                    console.log(msg.size);
+                    if (msg.size <= 1) return;
+                    await ch.bulkDelete(msg.size);
+                });
+            }
         }, time);
     } catch(err) {
         return;
