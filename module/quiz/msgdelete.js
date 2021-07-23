@@ -12,7 +12,6 @@ async function allmsgdelete (client = new Client, sdb = MDB.object.server, time 
         setTimeout(async function() {
             if (ch) {
                 await ch.messages.fetch({ after: sdb.quiz.msg.npid }).then(async function(msg) {
-                    console.log(msg.size);
                     if (msg.size <= 1) return;
                     await ch.bulkDelete(msg.size);
                 });

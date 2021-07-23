@@ -381,7 +381,6 @@ async function autoselfcheck(client = new Client, message = new Message, sdb = M
             var mdb = MDB.object.mandl;
             mdb = obj[i];
 
-            console.log('ID =', mdb.id);
             var user = client.users.cache.get(mdb.id) || undefined;
             await udata.findOne({
                 userID: mdb.id
