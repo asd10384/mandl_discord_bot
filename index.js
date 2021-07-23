@@ -1,6 +1,6 @@
 
 require('dotenv').config();
-const { Client, Collection, MessageEmbed, Message } = require('discord.js');
+const { Client, Collection, MessageEmbed, Message, Channel } = require('discord.js');
 const client = new Client({partials: ['MESSAGE', 'CHANNEL', 'REACTION', 'USER']});
 const { readdirSync } = require('fs');
 const { join } = require('path');
@@ -8,6 +8,11 @@ const db = require('quick.db');
 const log = require('./log/log');
 const ansermsg = require('./module/quiz/ansermsg');
 var checkyturl = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g;
+require('discord-buttons')(client);
+
+module.exports = {
+    client,
+};
 
 // env
 const prefix = process.env.prefix;
@@ -38,7 +43,7 @@ require('./client/ready')(client);
 // client login
 client.login(process.env.token);
 
-client.on('message', async (message) => {
+client.on('message', async (message = new Message) => {
     // 봇이나 디엠 메시지 무시
     if (message.author.bot) return;
     if (message.channel.type === 'dm') return;
@@ -81,7 +86,7 @@ client.on('message', async (message) => {
                 } catch(error) {
                     if (commandName == '' || commandName == ';' || commandName == undefined || commandName == null) return ;
                     // 오류 확인
-                    // log.errlog(error);
+                    log.errlog(error);
                     const embed = new MessageEmbed()
                         .setColor('DARK_RED')
                         .setDescription(`\` ${commandName} \` 이라는 명령어를 찾을수 없습니다.`)
@@ -131,10 +136,12 @@ client.on('voiceStateUpdate', async (old, now) => {
     if (old) await vchannelleave(client, old);
     if (now) return await vchanneljoin(client, now);
 });
-client.on('channelDelete', async (channel) => {
+client.on('channelDelete', async (channel = new Channel) => {
     return vchanneldelete(client, channel);
 });
 
-module.exports = {
-    client,
-};
+const { MessageComponent } = require('discord-buttons');
+const clickbutton = require('./client/clickbutton');
+client.on('clickButton', async (button = new MessageComponent) => {
+    return clickbutton(client, button);
+});

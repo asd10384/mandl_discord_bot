@@ -12,6 +12,7 @@
     "cheerio": "^1.0.0-rc.3",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.5",
+    "discord-buttons": "^4.0.0",
     "discord-giveaways": "^4.2.1",
     "discord.js": "^12.5.1",
     "discord.js-pagination": "^1.0.3",
@@ -38,7 +39,7 @@
     "selfcheck": "^8.0.1",
     "simple-youtube-api": "^5.2.1",
     "sleep": "^6.3.0",
-    "ytdl-core": "^4.8.3"
+    "ytdl-core": "^4.9.0"
   },
   "scripts": {
     ".": "node index.js",
