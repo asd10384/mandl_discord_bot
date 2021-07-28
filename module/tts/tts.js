@@ -108,11 +108,6 @@ async function geturl(message = new Message, text = String, options = Object) {
                 text: false
             };
         }
-        return {
-            url: 'youtubelinkerror',
-            options: options,
-            text: false
-        };
     }
     return {
         url: msg(message, text),
@@ -126,7 +121,10 @@ const repobj = eval(process.env.TTSMSG)[0] || require('./set/ttsmsg');
 function msg(message = new Message, text = '') {
     text = text.replace(/<@\!?[(0-9)]{18}>/g, (text) => {
         var user = message.guild.members.cache.get(text.replace(/[^0-9]/g,'')) || null;
-        return (user) ? (user.nickname) ? user.nickname.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi,'') : user.user.username.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi,'') : '';
+        return (user) ? (user.nickname) ? user.nickname : user.user.username : '';
+    });
+    text = text.replace(/\<a?\:.*\:[(0-9)]{18}\>/g, (text) => {
+        return '이모티콘';
     });
     for (i in repobj) {
         text = text.replace(new RegExp(i, 'gi') || new RegExp('\\'+i, 'gi'), repobj[i]) || i;
