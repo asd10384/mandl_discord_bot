@@ -86,7 +86,7 @@ client.on('message', async (message = new Message) => {
                 } catch(error) {
                     if (commandName == '' || commandName == ';' || commandName == undefined || commandName == null) return ;
                     // 오류 확인
-                    log.errlog(error);
+                    // log.errlog(error);
                     const embed = new MessageEmbed()
                         .setColor('DARK_RED')
                         .setDescription(`\` ${commandName} \` 이라는 명령어를 찾을수 없습니다.`)
