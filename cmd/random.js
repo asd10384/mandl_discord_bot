@@ -10,7 +10,9 @@ const rgobj = {
     Fighter: '전사',
     Mage: '마법사',
     Marksman: '원딜',
-    Tank: '탱커'
+    Tank: '탱커',
+    Support: '서포터',
+    Assassin: '암살자'
 };
 const rglist = Object.keys(rgobj);
 const rgcheck = new RegExp(rglist.join('|'), 'gi');
@@ -81,10 +83,12 @@ module.exports = {
                         .setTitle(`**롤 캐릭터 추천 - ${args[1]}명**`)
                         .setFooter(`${pp}랜덤 도움말`)
                         .setColor('ORANGE');
+                    var text = '';
                     for (i in list) {
-                        embed.addField(`**${Number(i)+1}.** ${list[i].name}`, `[OP.GG 바로가기](https://op.gg/champion/${list[i].id})`);
+                        text += `**${Number(i)+1}.** ${list[i].name}\n`;
                     }
-                    return message.channel.send(embed).then(m => msgdelete(m, Number(process.env.deletetime)*5));
+                    message.channel.send(embed).then(m => msgdelete(m, Number(process.env.deletetime)*5));
+                    return message.channel.send(text).then(m => msgdelete(m, Number(process.env.deletetime)*5));
                 }
             }
             var champ = champions[random({min: 0, max: champions.length-1})];
