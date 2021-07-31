@@ -47,12 +47,12 @@ async function ban(client = new Client, message = new Message, args = Array, sdb
                         udb2.save();
                     }
                     if (ttsboolen == false) {
-                        ttscheck.setTitle(`\` ${user2.username} \`님의 TTS 설정`)
+                        ttscheck.setTitle(`\` ${(muser && muser.nickname) ? muser.nickname : user2.username} \`님의 TTS 설정`)
                             .setDescription(`이미 밴 상태입니다.`);
                         return message.channel.send(ttscheck).then(m => msgdelete(m, Number(process.env.deletetime)+3000));
                     }
                     const date = format.nowdate(new Date());
-                    ttscheck.setTitle(`\` ${user2.username} \`님의 TTS 설정`)
+                    ttscheck.setTitle(`\` ${(muser && muser.nickname) ? muser.nickname : user2.username} \`님의 TTS 설정`)
                         .setDescription(`${date['time']['2']}\n이후로 \` 밴 \` 되셨습니다.`);
                     return message.channel.send(ttscheck).then(m => {
                         if (!sdb.tts.ttschannelid === message.channel.id) {
@@ -87,8 +87,9 @@ async function unban(client = new Client, message = new Message, args = Array, s
         }
         udb.name = user.username;
         if (args[1]) {
-            var muser = message.guild.members.cache.get(args[1].replace(/[^0-9]/g, '')).user || undefined;
+            var muser = message.guild.members.cache.get(args[1].replace(/[^0-9]/g, ''));
             if (muser) {
+                var user2 = muser.user;
                 udata.findOne({
                     userID: muser.id
                 }, async (err, udb2) => {
@@ -103,12 +104,12 @@ async function unban(client = new Client, message = new Message, args = Array, s
                         udb2.save();
                     }
                     if (ttsboolen == true) {
-                        ttscheck.setTitle(`\` ${muser.username} \`님의 TTS 설정`)
+                        ttscheck.setTitle(`\` ${(muser && muser.nickname) ? muser.nickname : user2.username} \`님의 TTS 설정`)
                             .setDescription(`이미 해재된 상태입니다.`);
                         return message.channel.send(ttscheck).then(m => msgdelete(m, Number(process.env.deletetime)+3000));
                     }
                     const date = format.nowdate(new Date());
-                    ttscheck.setTitle(`\` ${muser.username} \`님의 TTS 설정`)
+                    ttscheck.setTitle(`\` ${(muser && muser.nickname) ? muser.nickname : user2.username} \`님의 TTS 설정`)
                         .setDescription(`${date['time']['2']}\n이후로 \` 해제 \` 되셨습니다.`);
                     return message.channel.send(ttscheck).then(m => {
                         if (!sdb.tts.ttschannelid === message.channel.id) {
