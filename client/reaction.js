@@ -35,7 +35,7 @@ async function go(client = new Client, reaction = new ReactionCollector, user = 
             if (name === '⏭️') {
                 if (sdb.selfcheck.channelid == message.channel.id) {
                     reaction.users.remove(user);
-                    return await client.commands.get(`selfcheck`).run(client, message, [], sdb, user);
+                    return await client.commands.get(`selfcheck`).run(client, message, [], process.env.prefix, sdb, user);
                 }
             }
             if (reaction.message.channel.id === sdb.quiz.qzchannelid) {
