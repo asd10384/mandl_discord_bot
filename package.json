@@ -14,7 +14,7 @@
     "cookie-parser": "^1.4.5",
     "discord-buttons": "^4.0.0",
     "discord-giveaways": "^4.2.1",
-    "discord.js": "^12.5.1",
+    "discord.js": "^12.5.3",
     "discord.js-pagination": "^1.0.3",
     "dotenv": "^8.2.0",
     "download": "^6.2.5",
