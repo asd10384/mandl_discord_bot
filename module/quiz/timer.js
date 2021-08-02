@@ -4,6 +4,7 @@ const db = require('quick.db');
 const { MessageEmbed, Client, Message } = require('discord.js');
 const MDB = require('../../MDB/data');
 const log = require('../../log/log');
+const end = require('./end');
 
 module.exports = {
     timer,
