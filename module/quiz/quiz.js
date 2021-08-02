@@ -60,7 +60,7 @@ async function music(client = new Client, message = new Message, args = Array, s
             await timer.timer(client, message, sdb);
             const dispatcher = connection.play(ytdl(link, {
                 quality: 'highestaudio',
-                // requestOptions: {agent}
+                requestOptions: {agent}
             }), {volume: 0.07});
             sdb.quiz.start.user = true;
             sdb.quiz.start.hint = true;
