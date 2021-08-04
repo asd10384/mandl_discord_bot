@@ -53,20 +53,25 @@ async function broadcast(channel = new Channel, url = String, options = Object) 
 }
 
 async function gettext(text = '') {
-    const response = await ttsclient.synthesizeSpeech({
-        input: {text: text},
-        voice: {
-            languageCode: 'ko-KR',
-            name: 'ko-KR-Standard-A'
-        },
-        audioConfig: {
-            audioEncoding: 'MP3', // 형식
-            speakingRate: 0.905, // 속도
-            pitch: 0, // 피치
-            // sampleRateHertz: 16000, // 헤르츠
-            // effectsProfileId: ['medium-bluetooth-speaker-class-device'] // 효과 https://cloud.google.com/text-to-speech/docs/audio-profiles
-        },
-    });
-    return response[0].audioContent;
+    let response;
+    try {
+        response = await ttsclient.synthesizeSpeech({
+            input: {text: text},
+            voice: {
+                languageCode: 'ko-KR',
+                name: 'ko-KR-Standard-A'
+            },
+            audioConfig: {
+                audioEncoding: 'MP3', // 형식
+                speakingRate: 0.905, // 속도
+                pitch: 0, // 피치
+                // sampleRateHertz: 16000, // 헤르츠
+                // effectsProfileId: ['medium-bluetooth-speaker-class-device'] // 효과 https://cloud.google.com/text-to-speech/docs/audio-profiles
+            },
+        });
+        return response[0].audioContent;
+    } catch(err) {
+        return new Buffer('');
+    }
 }
 // 출력 끝
