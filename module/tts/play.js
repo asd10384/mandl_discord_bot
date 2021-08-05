@@ -71,7 +71,7 @@ async function gettext(text = '') {
         });
         return response[0].audioContent;
     } catch(err) {
-        return new Buffer('');
+        return new Buffer.from('');
     }
 }
 // 출력 끝
