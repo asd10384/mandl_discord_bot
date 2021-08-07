@@ -50,15 +50,15 @@ async function tts(client = new Client, message = new Message, args = Array, sdb
             db.set(`db.${message.guild.id}.tts.timertime`, Number(process.env.ttsout)*60);
             var channel;
             if (sdb.tts.move) {
-                if (message.member.voice.channel) {
+                if (message.member.voice.channel || null) {
                     channel = message.member.voice.channel || null;
-                } else if (message.guild.me.voice.channel) {
+                } else if (message.guild.me.voice.channel || null) {
                     channel = message.guild.voice.channel || null;
                 }
             } else {
-                if (message.guild.me.voice.channel) {
+                if (message.guild.me.voice.channel || null) {
                     channel = message.guild.me.voice.channel || null;
-                } else if (message.member.voice.channel) {
+                } else if (message.member.voice.channel || null) {
                     channel = message.member.voice.channel || null;
                 }
             }

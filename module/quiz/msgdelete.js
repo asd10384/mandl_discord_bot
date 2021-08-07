@@ -11,18 +11,14 @@ async function allmsgdelete (client = new Client, sdb = MDB.object.server, time 
         var ch = client.channels.cache.get(sdb.quiz.qzchannelid) || null;
         setTimeout(async function() {
             if (ch) {
-                await ch.messages.fetch({ after: sdb.quiz.msg.npid }).then(async function(msg) {
-                    if (msg.size <= 1) return;
-                    try {
-                        await ch.bulkDelete(msg.size);
-                    } catch(err) {
-                        return;
+                ch.messages.fetch({ after: sdb.quiz.msg.npid }).then(async function(msg) {
+                    if (msg.size > 1) {
+                        try {
+                            ch.bulkDelete(msg.size);
+                        } catch(err) {}
                     }
                 });
             }
         }, time);
-    } catch(err) {
-        return;
-    }
-    return;
+    } catch(err) {}
 }

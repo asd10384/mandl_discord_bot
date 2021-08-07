@@ -47,11 +47,8 @@ module.exports = end = async function (client = new Client, message = new Messag
     try {
         client.channels.cache.get(sdb.quiz.vcid).leave();
     } catch(err) {}
-    var c;
     try {
-        c = client.channels.cache.get(sdb.quiz.qzchannelid);
-    } catch(err) {}
-    try {
+        var c = client.channels.cache.get(sdb.quiz.qzchannelid);
         c.messages.fetch(sdb.quiz.msg.listid).then(m => {
             m.edit(list);
         });
