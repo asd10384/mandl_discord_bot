@@ -18,6 +18,7 @@ module.exports = end = async function (client = new Client, message = new Messag
     sdb.quiz.quiz.vocal = [];
     sdb.quiz.quiz.link = [];
     sdb.quiz.quiz.count = 0;
+    sdb.quiz.quiz.nowanser = '-';
 
     sdb.quiz.user.hint = [];
     sdb.quiz.user.skip = [];
@@ -57,6 +58,5 @@ module.exports = end = async function (client = new Client, message = new Messag
             m.reactions.removeAll();
         });
     } catch(err) {}
-
-    await allmsgdelete(client, sdb, 1000);
+    await allmsgdelete(client, sdb, 950);
 };

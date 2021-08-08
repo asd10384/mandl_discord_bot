@@ -56,6 +56,7 @@ const out = {
                 quiz: {
                     format: String,
                     quizurl: String,
+                    nowanser: String,
                     name: Array,
                     vocal: Array,
                     link: Array,
@@ -173,6 +174,7 @@ async function set_server(message = new Message) {
             quiz: {
                 format: '',
                 quizurl: '',
+                nowanser: '-',
                 name: [],
                 vocal: [],
                 link: [],

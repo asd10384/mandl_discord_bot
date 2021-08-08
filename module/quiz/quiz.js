@@ -22,11 +22,12 @@ module.exports = {
 };
 
 async function music(client = new Client, message = new Message, args = Array, sdb = MDB.object.server, vchannel = new Channel, user = new User) {
+    var count = sdb.quiz.quiz.count;
+    sdb.quiz.quiz.nowanser = sdb.quiz.quiz.name[count];
     sdb.tts.tts = false;
     sdb.quiz.start.start = true;
     await sdb.save();
 
-    var count = sdb.quiz.quiz.count;
     var link = sdb.quiz.quiz.link[count];
     if (link == undefined || link == null || link == '') {
         vchannel.leave();
@@ -74,11 +75,12 @@ async function music(client = new Client, message = new Message, args = Array, s
     }
 }
 async function img(client = new Client, message = new Message, args = Array, sdb = MDB.object.server, vchannel = new Channel, user = new User) {
+    var count = sdb.quiz.quiz.count;
+    sdb.quiz.quiz.nowanser = sdb.quiz.quiz.name[count];
     sdb.tts.tts = false;
     sdb.quiz.start.start = true;
     await sdb.save();
 
-    var count = sdb.quiz.quiz.count;
     var img = sdb.quiz.quiz.link[count];
     if (img == undefined || img == null || img == '') {
         vchannel.leave();

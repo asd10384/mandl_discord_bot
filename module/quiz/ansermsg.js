@@ -16,10 +16,7 @@ module.exports = ansermsg = async function (client = new Client, message = new M
         }, 100);
     }
     const text = args.join(' ').trim().toLowerCase();
-
-    var count = sdb.quiz.quiz.count;
-    var name = sdb.quiz.quiz.name[count];
-    var anser_text = `${name}`.trim().toLowerCase();
+    var anser_text = sdb.quiz.quiz.nowanser.trim().toLowerCase();
 
     if (text == '힌트' || text == 'hint') {
         return await hint(client, message, args, sdb, user);
@@ -29,6 +26,7 @@ module.exports = ansermsg = async function (client = new Client, message = new M
     }
     if (text == anser_text) {
         sdb.quiz.start.user = false;
+        sdb.quiz.quiz.nowanser = '-';
         await sdb.save();
         return await anser(client, message, args, sdb, user);
     }

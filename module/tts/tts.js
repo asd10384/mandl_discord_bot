@@ -7,6 +7,9 @@ const MDB = require('../../MDB/data');
 const log = require('../../log/log');
 const udata = MDB.module.user();
 
+const HttpsProxyAgent = require('https-proxy-agent');
+const agent = HttpsProxyAgent(process.env.PROXY); // 보류
+
 const ytdl = require('ytdl-core');
 var checkyturl = /(?:https?:\/\/)?(?:www\.|music\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g;
 var checkytid = /(?:https?:\/\/)?(?:www\.|music\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?/gi;
@@ -86,7 +89,10 @@ async function geturl(message = new Message, text = String, options = Object) {
             options = {
                 volume: 0.08
             };
-            var yt = ytdl(`http://www.youtube.com/watch?v=${text.replace(/ +/g,'').replace(checkytid, '').replace(/\&[a-z]+/g,'')}`, { bitrate: 512000 }) || null;
+            var yt = ytdl(`http://www.youtube.com/watch?v=${text.replace(/ +/g,'').replace(checkytid, '').replace(/\&[a-z]+/g,'')}`, {
+                quality: 'highestaudio',
+                requestOptions: {agent}
+            }) || null;
             message.delete();
             if (yt) {
                 return {

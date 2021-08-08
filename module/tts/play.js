@@ -22,6 +22,7 @@ const sncheck = new RegExp(snlist.join('|'), 'gi');
 async function play(serverid = String, channel = new Channel, text = '', options = Object) {
     var list = [];
     var output;
+    var err = false;
     text = text.replace(sncheck, (text) => {
         return '#@#'+text+'#@#';
     });
@@ -31,10 +32,13 @@ async function play(serverid = String, channel = new Channel, text = '', options
             list[i] = (snlist.includes(list[i])) 
                 ? readFileSync(`sound/signature/${sncheckobj[list[i]]}.mp3`) 
                 : await gettext(list[i]);
+            if (!list[i]) err = true;
         }
+        if (err) return;
         output = Buffer.concat(list);
     } else {
         output = await gettext(text);
+        if (output) return;
     }
 
     options['volume'] = 0.7;
@@ -73,7 +77,7 @@ async function gettext(text = '') {
         });
         return response[0].audioContent;
     } catch(err) {
-        return new Buffer.from('');
+        return null;
     }
 }
 // 출력 끝
