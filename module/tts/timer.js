@@ -17,7 +17,7 @@ function set(message = new Message, sdb = MDB.object.server, start = Boolean) {
 async function play(message = new Message, sdb = MDB.object.server) {
     setInterval(async () => {
         var time = db.get(`db.${message.guild.id}.tts.timertime`);
-        if (time == undefined || time == null) time = Number(process.env.ttsout)*60;
+        if (!time) time = Number(process.env.ttsout)*60;
         var status = db.get(`db.${message.guild.id}.tts.timerstatus`);
         if (status) {
             db.set(`db.${message.guild.id}.tts.timerstatus`, false);
@@ -32,19 +32,20 @@ async function play(message = new Message, sdb = MDB.object.server) {
                     .then(m => msgdelete(m, Number(process.env.deletetime)*3));
             }
         }
-        if (sdb.quiz.start.start) return;
-        var on = db.get(`db.${message.guild.id}.tts.timeron`);
-        if (on) {
-            if (time <= 0) {
-                set(message, sdb, false);
-                try {
-                    message.guild.me.voice.channel.leave();
-                } catch(err) {}
+        if (!sdb.quiz.start.start) {
+            var on = db.get(`db.${message.guild.id}.tts.timeron`);
+            if (on) {
+                if (time <= 0) {
+                    set(message, sdb, false);
+                    try {
+                        message.guild.me.voice.channel.leave();
+                    } catch(err) {}
+                } else {
+                    db.set(`db.${message.guild.id}.tts.timertime`, time-5);
+                }
             } else {
-                db.set(`db.${message.guild.id}.tts.timertime`, time-5);
+                set(message, sdb, false);
             }
-        } else {
-            set(message, sdb, false);
         }
     }, 5000);
 }
