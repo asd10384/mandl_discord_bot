@@ -21,6 +21,7 @@ const sncheck = new RegExp(snlist.join('|'), 'gi');
 // TEXT -> tts.WAV로 변경
 async function play(serverid = String, channel = new Channel, text = '', options = Object) {
     var list = [];
+    var buf;
     var output;
     var err = false;
     text = text.replace(sncheck, (text) => {
@@ -29,10 +30,17 @@ async function play(serverid = String, channel = new Channel, text = '', options
     list = text.split('#@#');
     if (list.length > 0) {
         for (i in list) {
-            list[i] = (snlist.includes(list[i])) 
-                ? readFileSync(`sound/signature/${sncheckobj[list[i]]}.mp3`) 
-                : await gettext(list[i]);
-            if (!list[i]) err = true;
+            if (snlist.includes(list[i])) {
+                buf = readFileSync(`sound/signature/${sncheckobj[list[i]]}.mp3`);
+            } else {
+                buf = await gettext(list[i]);
+            }
+            if (buf) {
+                list[i] = buf;
+            } else {
+                err = true;
+                break;
+            }
         }
         if (err) return;
         output = Buffer.concat(list);
@@ -75,6 +83,7 @@ async function gettext(text = '') {
                 // effectsProfileId: ['medium-bluetooth-speaker-class-device'] // 효과 https://cloud.google.com/text-to-speech/docs/audio-profiles
             },
         });
+        if (!response) return null;
         return response[0].audioContent;
     } catch(err) {
         return null;
