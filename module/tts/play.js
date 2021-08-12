@@ -23,27 +23,25 @@ async function play(serverid = String, channel = new Channel, text = '', options
     var list = [];
     var buf;
     var output;
-    var err = false;
     text = text.replace(sncheck, (text) => {
         return '#@#'+text+'#@#';
     });
     list = text.split('#@#');
     if (list.length > 0) {
-        for (i in list) {
+        for (let i in list) {
             if (snlist.includes(list[i])) {
                 buf = readFileSync(`sound/signature/${sncheckobj[list[i]]}.mp3`);
             } else {
                 buf = await gettext(list[i]);
             }
-            if (buf) {
-                list[i] = buf;
-            } else {
-                err = true;
-                break;
-            }
+            list[i] = buf;
         }
         if (err) return;
-        output = Buffer.concat(list);
+        try {
+            output = Buffer.concat(list);
+        } catch(err) {
+            return;
+        }
     } else {
         output = await gettext(text);
         if (output) return;
@@ -63,7 +61,9 @@ async function broadcast(channel = new Channel, url = String, options = Object) 
         channel.join().then(async function(connection) {
             var dispatcher = connection.play(url, options);
         });
-    } catch(err) {}
+    } catch(err) {
+        return;
+    }
 }
 
 async function gettext(text = '') {
@@ -86,7 +86,22 @@ async function gettext(text = '') {
         if (!response) return null;
         return response[0].audioContent;
     } catch(err) {
-        return null;
+        response = await ttsclient.synthesizeSpeech({
+            input: {text: text},
+            voice: {
+                languageCode: 'ko-KR',
+                name: 'ko-KR-Standard-A'
+            },
+            audioConfig: {
+                audioEncoding: 'MP3', // 형식
+                speakingRate: 0.905, // 속도
+                pitch: 0, // 피치
+                // sampleRateHertz: 16000, // 헤르츠
+                // effectsProfileId: ['medium-bluetooth-speaker-class-device'] // 효과 https://cloud.google.com/text-to-speech/docs/audio-profiles
+            },
+        });
+        if (!response) return null;
+        return response[0].audioContent;
     }
 }
 // 출력 끝
